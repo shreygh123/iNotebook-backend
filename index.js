@@ -10,6 +10,7 @@ dotenv.config();
 
 
 var app = express()
+app.options("*", cors());
 
 // const app = express();
 app.use(cors({
