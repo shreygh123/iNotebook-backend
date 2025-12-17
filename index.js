@@ -10,7 +10,6 @@ dotenv.config();
 
 
 var app = express()
-app.options("*", cors());
 
 // const app = express();
 app.use(cors({
@@ -19,7 +18,9 @@ app.use(cors({
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
-}));app.use(express.json()) // to accept json data
+}));
+app.options("*", cors());
+app.use(express.json()) // to accept json data
 
 mongoose.connect(process.env.mongURI,()=>{console.log("Connected to Mongo Successfully")})
 // Available Routes
