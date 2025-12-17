@@ -8,7 +8,7 @@ const fetchuser= require('../Middlewares/fetchuser');
 const router = express.Router();
 
 //this is salt added to token
-const JWT_SECRET = "thisissecret ";
+const JWT_SECRET = "thisissecret";
 
 //Route1: Create a user at /api/auth/createUser   no login required here        // express validator
 router.post('/createUser',
