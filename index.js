@@ -12,8 +12,13 @@ dotenv.config();
 var app = express()
 
 // const app = express();
-app.use(cors())
-app.use(express.json()) // to accept json data
+app.use(cors({
+  origin: [
+    "https://i-notebook-frontend-ten.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));app.use(express.json()) // to accept json data
 
 mongoose.connect(process.env.mongURI,()=>{console.log("Connected to Mongo Successfully")})
 // Available Routes
