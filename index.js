@@ -10,6 +10,7 @@ let app = express()
 // const app = express();
 app.use(cors({
   origin: [
+    "https://i-notebook-sg.netlify.app",
     "https://i-notebook-frontend-ten.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
