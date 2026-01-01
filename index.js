@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "https://i-notebook-frontend-ten.vercel.app",
+  origin: "https://inotebook-sg.onrender.com",
   credentials: true
 }));
 
