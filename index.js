@@ -6,32 +6,30 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const app = express();
-
-// ✅ MUST BE FIRST
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "https://i-notebook-sg.netlify.app",
-        "https://i-notebook-frontend-ten.vercel.app",
-      ];
-
-      // Allow Postman / Server-to-server calls
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// ✅ Explicit preflight handler
+const allowedOrigins = [
+  "https://i-notebook-frontend-ten.vercel.app",
+  "https://i-notebook-sg.netlify.app"
+];
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,DELETE,OPTIONS"
+    );
+  }
+  // Preflight
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
 app.options("*", cors());
 
 app.use(express.json());
