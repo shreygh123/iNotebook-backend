@@ -1,23 +1,40 @@
-const express = require('express');
-const dotenv = require('dotenv');
-var cors = require('cors');
-const path= require('path');
-const mongoose =require("mongoose")
-// const mongURI = 'mongodb://localhost:27017/inotebook?readPreference=primary&appname=MongoDB%20Compass&ssl=false';
-dotenv.config();
-let app = express()
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
-// const app = express();
-app.use(cors({
-  origin: [
-    "https://i-notebook-sg.netlify.app",
-    "https://i-notebook-frontend-ten.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: true
-}));
+dotenv.config();
+
+const app = express();
+
+// ✅ MUST BE FIRST
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "https://i-notebook-sg.netlify.app",
+        "https://i-notebook-frontend-ten.vercel.app",
+      ];
+
+      // Allow Postman / Server-to-server calls
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ✅ Explicit preflight handler
 app.options("*", cors());
-app.use(express.json()) // to accept json data
+
+app.use(express.json());
 
 mongoose.connect(process.env.mongURI,()=>{console.log("Connected to Mongo Successfully")})
 // Available Routes
